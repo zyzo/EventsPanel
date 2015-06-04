@@ -1,0 +1,47 @@
+<html>
+<head>
+    <link rel="stylesheet" type="text/css" href="css/timeline.css" />
+    <link rel="stylesheet" type="text/css" href="css/calendar.css" />
+    <link rel="stylesheet" type="text/css" href="css/custom_an.css" />
+    <script src="js/modernizr.custom.63321.js"></script>
+</head>
+<body>
+	<div class="container">
+		<div class="main">
+        	<div class="custom-calendar-wrap custom-calendar-full">
+       			<div id="custom-inner" class="custom-inner">
+					<div class="custom-header clearfix">
+				        <nav>
+				            <span id="custom-prev" class="custom-prev"></span>
+				            <span id="custom-next" class="custom-next"></span>
+				        </nav>
+				        <h2 id="custom-month" class="custom-month"></h2>
+				        <h3 id="custom-year" class="custom-year"></h3>
+				    </div>
+					<div id="calendar" class="fc-calendar-container"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
+	<script type="text/javascript" src="js/calendario.js"></script>
+	<script type="text/javascript" src="js/data.js"></script>	
+	<script>
+		$(document).on('finish.calendar.calendario', function(e){
+			function updateMonthYear() {
+				$( '#custom-month' ).html( $( '#calendar' ).calendario('getMonthName') );
+				$( '#custom-year' ).html( $( '#calendar' ).calendario('getYear'));
+			}
+			$( '#custom-month' ).html( $( '#calendar' ).calendario('getMonthName') );
+			$( '#custom-year' ).html( $( '#calendar' ).calendario('getYear'));
+			$( '#custom-next' ).on( 'click', function() {
+				$( '#calendar' ).calendario('gotoNextMonth', updateMonthYear);
+			} );
+			$( '#custom-prev' ).on( 'click', function() {
+				$( '#calendar' ).calendario('gotoPreviousMonth', updateMonthYear);
+			} );
+		});
+		$('#calendar').calendario({caldata : events});
+	</script>
+</body>
+</html>
