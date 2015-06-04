@@ -33,7 +33,7 @@
     checkUpdate: true,
     weekdays: 'MON, TUE, WED, THU, FRI',
     weekends: 'SAT, SUN',
-    feed: 'http://calendario.t15.org/sync/'
+    feed: ''
   }
 
   Calendario.prototype.init = function (type, element, options) {
@@ -230,7 +230,8 @@
           .sort(function(a, b){
             return (a.allDay ? '00:00' : a.startTime).replace(':','') - (b.allDay ? '00:00' : b.startTime).replace(':','')
           })
-          if(data) content += this.parseDataToDay(data, day)
+          if(data) 
+            content += this.parseDataToDay(data, day)
           if(content !== '') inner += '<div class="fc-calendar-events">' + content + '</div>'
           ++day;
         } else {

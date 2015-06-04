@@ -71,13 +71,6 @@
 	width:  14.2%;
 }
 
-.fc-calendar .fc-row > div {
-	border-right: 1px solid #ddd;
-	padding: 4px;
-	overflow: hidden;
-	position: relative;
-}
-
 .fc-calendar .fc-head > div {
 	text-align: center;
 }

@@ -25,7 +25,8 @@
 	</div>
 	<script type="text/javascript" src="js/jquery-1.11.3.js"></script>
 	<script type="text/javascript" src="js/calendario.js"></script>
-	<script type="text/javascript" src="js/data.js"></script>	
+	<script type="text/javascript" src="js/data.js"></script>
+	<script type="text/javascript" src="js/dataTimeline.js"></script>	
 	<script>
 		$(document).on('finish.calendar.calendario', function(e){
 			function updateMonthYear() {
@@ -41,7 +42,17 @@
 				$( '#calendar' ).calendario('gotoPreviousMonth', updateMonthYear);
 			} );
 		});
-		$('#calendar').calendario({caldata : events});
+		var t = new Date();
+		//Creation of today event
+		var today = ((t.getMonth() + 1) < 10 ? '0' + (t.getMonth() + 1) : (t.getMonth() + 1)) + '-' + (t.getDate() < 10 ? '0' + t.getDate() : t.getDate()) + '-' +t.getFullYear();
+		$('#calendar').calendario(
+		{caldata : {
+			'06-04-2015' : [{content: 'TODAY', allDay: true}],
+			'06-06-2015' : [{content: 'Important Meeting at 4', startTime: '04:00', endTime: '06:00', note : 'Everyone please gather at Markketing Department'},
+							{content: 'Asean football cup', startTime: '04:00', endTime : '12:20', note : 'eaadsdsadas'}],
+			'07-01-2015' : [{content: 'The first of July', allDay: true, note : 'blabla'}]
+			}
+		});
 	</script>
 </body>
 </html>

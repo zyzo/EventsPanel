@@ -95,7 +95,6 @@
 .custom-inner:after  {
 	content: '';
 	width: 99%;
-	height: 50%;
 	position: absolute;
 	background: #f6f6f6;
 	bottom: -4px;
@@ -264,8 +263,10 @@
 /* Modifications */
 
 .fc-calendar-container {
-	width: auto;
-	padding: 10px;
+	padding: 20px 20px 0 8px;
+  	overflow: auto;
+  	box-sizing: content-box;
+  	width: 100% !important;
 	background: #f6f6f6;
 	box-shadow: inset 0 1px rgba(255,255,255,0.8);
 }
@@ -312,19 +313,6 @@
 	text-shadow: 0 1px 1px rgba(0,0,0,0.1);
 }
 
-.fc-calendar .fc-row > div.fc-content:after {
-	content: '\00B7';
-	text-align: center;
-	width: 20px;
-	margin-left: -10px;
-	position: absolute;
-	color: #DDD;
-	font-size: 70px;
-	line-height: 20px;
-	left: 50%;
-	bottom: 3px;
-}
-
 .fc-calendar .fc-row > div.fc-today.fc-content:after {
 	color: #3594cb;
 }
@@ -352,6 +340,10 @@
 	}
 }
 
+.custom-calendar-full {
+	height : 400px !important;
+}
+
 	.custom-header nav,
 	.custom-calendar-full,
 	.fc-calendar-container, 
@@ -367,18 +359,21 @@
 		width: auto;
 	}
 
-	.fc-calendar .fc-body {
-	  padding: 20px;  
-  overflow-x: scroll;
-	}
-
-	.fc-calendar .fc-row,
+	.fc-calendar .fc-row, 
 	.ie9 .fc-calendar .fc-row > div,
 	.fc-calendar .fc-row > div {
 		height: auto;
 		width: 100%;
-  		border-bottom: 1px solid #ddd;
 	}
+
+	.ie9 .fc-calendar .fc-row > div,
+	.fc-calendar .fc-row > div {
+  		border-bottom: 1px solid #ddd;
+  	}
+
+  	.fc-calendar .fc-row {
+  		border-bottom: 2px solid #6cbfee;
+  	}
 
 	.fc-calendar .fc-row > div {
 		float: none;
@@ -428,3 +423,21 @@
 	html, body, .container, .main {
 		height: auto;
 	}
+
+.fc-calendar .fc-row > div > div a, .fc-calendar .fc-row > div > div span {
+  color : rgb(239, 79, 105);
+  font-size: 13px;
+  display: inline-block;
+  padding: 3px 5px;
+  border-radius: 3px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+  margin-bottom: 1px;
+}
+
+.fc-calendar .fc-row > div > div span:hover {
+	color : white;
+	background-color : rgba(239, 79, 105, 0.93);;
+}
