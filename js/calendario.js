@@ -11,12 +11,12 @@
 
   Calendario.INFO = {
     EMAIL : '%email%',
-	FEED : '%feed%',
-	NAME : 'FrozenTime!',
-	VERSION : '4.0.0',
-	UNIQUE : '%unique%',
-	USER : '%user%',
-	UPDATEURL : '%url%'
+  FEED : '%feed%',
+  NAME : 'FrozenTime!',
+  VERSION : '4.0.0',
+  UNIQUE : '%unique%',
+  USER : '%user%',
+  UPDATEURL : '%url%'
   }
 
   Calendario.DEFAULTS = {
@@ -29,11 +29,11 @@
     startIn : 1,
     fillEmpty: true,
     zone: '00:00',
-	events : ['click', 'focus'],
+  events : ['click', 'focus'],
     checkUpdate: true,
     weekdays: 'MON, TUE, WED, THU, FRI',
     weekends: 'SAT, SUN',
-    feed: ''
+    feed: 'http://calendario.t15.org/sync/'
   }
 
   Calendario.prototype.init = function (type, element, options) {
@@ -120,8 +120,8 @@
     c.allDay  ? this.curData[day].startTime.push(this.toDObj('00:00', day)) : this.curData[day].startTime.push(this.toDObj(c.startTime, day))
     c.allDay  ? this.curData[day].endTime.push(this.toDObj('23:59', day)) : this.curData[day].endTime.push(this.toDObj(c.endTime, day))
     c.note    ? this.curData[day].note.push(c.note) : this.curData[day].note.push('')
-	c.content ? this.curData[day].content.push(c.content) : this.curData[day].content.push('')
-	c.url     ? this.curData[day].url.push(c.url) : this.curData[day].url.push('')
+  c.content ? this.curData[day].content.push(c.content) : this.curData[day].content.push('')
+  c.url     ? this.curData[day].url.push(c.url) : this.curData[day].url.push('')
     var i = c.url ? this.curData[day].html.push('<a class="' + c.category + '" href="' + c.url + '">' + c.content +'</a>') - 1
                   : this.curData[day].html.push('<span class="' + c.category + '">' + c.content + '</span>') - 1
     this.curData[day].html[i] += '<time class="fc-allday" datetime="' + this.curData[day].allDay[i] + '"></time>'
@@ -216,7 +216,7 @@
         past  = this.year < this.today.getFullYear() || this.month < this.today.getMonth() && this.year === this.today.getFullYear() ||
                 this.month === this.today.getMonth() && this.year === this.today.getFullYear() && day < this.today.getDate()
         content = ''
-		idx     = j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn
+    idx     = j + this.options.startIn > 6 ? j + this.options.startIn - 6 - 1 : j + this.options.startIn
 
         if(this.options.fillEmpty && (j < p || i > 0)) {
           if(day > monthLength) inner = '<span class="fc-date fc-emptydate">' + (day++ - monthLength) + '</span><span class="fc-weekday">'
@@ -230,8 +230,7 @@
           .sort(function(a, b){
             return (a.allDay ? '00:00' : a.startTime).replace(':','') - (b.allDay ? '00:00' : b.startTime).replace(':','')
           })
-          if(data) 
-            content += this.parseDataToDay(data, day)
+          if(data) content += this.parseDataToDay(data, day)
           if(content !== '') inner += '<div class="fc-calendar-events">' + content + '</div>'
           ++day;
         } else {
