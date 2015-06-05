@@ -372,7 +372,7 @@
   	}
 
   	.fc-calendar .fc-row {
-  		border-bottom: 2px solid #6cbfee;
+  		margin-bottom: 4px;
   	}
 
 	.fc-calendar .fc-row > div {
