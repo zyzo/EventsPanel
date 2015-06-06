@@ -48,7 +48,8 @@
 					<div id="optionPanel">\
 						<i class="fa fa-cog"></i>\
 						<div id="options" class="hidden">\
-							<label for="community">Community</label><input type="text" id="community"/>\
+							<label for="community">Community</label><input type="text" id="community"/><br/>\
+							<label for="startdate">Start date</label><input type="text" id="startdate" placeholder="YYYY-MM-DD"/><br/>\
 							<button type="button" id="refresh">Refresh</button>\
 						</div>\
 					</div>');
@@ -57,15 +58,19 @@
 				});
 			calendar.find('#refresh').click(function() {
 				var source = $('#community').val();
-				initCalendar('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=' + source);
+				var startdate = $('#startdate').val();
+				initCalendar(source, startdate);
 			});
 
 		});
 		var t = new Date();
 		//Creation of today event
 		var today = ((t.getMonth() + 1) < 10 ? '0' + (t.getMonth() + 1) : (t.getMonth() + 1)) + '-' + (t.getDate() < 10 ? '0' + t.getDate() : t.getDate()) + '-' +t.getFullYear();
-		function initCalendar(dataUrl) {
-			$.getJSON(dataUrl, function(data) {
+		function initCalendar(source, startdate) {
+			if (!source) {
+				source = 'all';
+			}
+			$.getJSON('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=' + source, function(data) {
 			if (data.error) {
 				 alert('API error : ' + data.error);
 				 return; 
@@ -85,11 +90,12 @@
 			calendario.data('bz.calendario', null);
 			calendario.calendario
 			({
-				caldata : caldata
+				caldata : caldata,
+				today : startdate
 			});
 		});
 		};
-		initCalendar('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=all');
+		initCalendar('all');
 		/*
 		$('#calendar').calendario(
 		{caldata : {
