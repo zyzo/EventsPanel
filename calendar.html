@@ -3,6 +3,7 @@
     <link rel="stylesheet" type="text/css" href="css/timeline.css" />
     <link rel="stylesheet" type="text/css" href="css/calendar.css" />
     <link rel="stylesheet" type="text/css" href="css/custom_an.css" />
+    <link rel="stylesheet" type="text/css" href="font-awesome/css/font-awesome.css" />
     <script src="js/modernizr.custom.63321.js"></script>
 </head>
 <body>
@@ -42,11 +43,34 @@
 			$( '#custom-prev' ).on( 'click', function() {
 				$( '#calendar' ).calendario('gotoPreviousMonth', updateMonthYear);
 			} );
+			var calendar = $('#calendar');
+			calendar.prepend('\
+					<div id="optionPanel">\
+						<i class="fa fa-cog"></i>\
+						<div id="options" class="hidden">\
+							<label for="community">Community</label><input type="text" id="community"/>\
+							<button type="button" id="refresh">Refresh</button>\
+						</div>\
+					</div>');
+			calendar.find('#optionPanel > .fa-cog').click(function() {		
+				calendar.find('#optionPanel > #options').toggleClass('hidden');
+				});
+			calendar.find('#refresh').click(function() {
+				var source = $('#community').val();
+				initCalendar('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=' + source);
+			});
+
 		});
 		var t = new Date();
 		//Creation of today event
 		var today = ((t.getMonth() + 1) < 10 ? '0' + (t.getMonth() + 1) : (t.getMonth() + 1)) + '-' + (t.getDate() < 10 ? '0' + t.getDate() : t.getDate()) + '-' +t.getFullYear();
-		var data = $.getJSON('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=all', function(data) {
+		function initCalendar(dataUrl) {
+			$.getJSON(dataUrl, function(data) {
+			if (data.error) {
+				 alert('API error : ' + data.error);
+				 return; 
+			}
+
 			var caldata = {};
 			$.each(data, function(key, value) {
 				var toInsert = api2Rio(value);
@@ -56,11 +80,16 @@
 					caldata[toInsert[0]].push(toInsert[1]);
 				}
 			});
-			$('#calendar').calendario
+			calendario = $('#calendar');
+			calendario.empty();
+			calendario.data('bz.calendario', null);
+			calendario.calendario
 			({
 				caldata : caldata
 			});
 		});
+		};
+		initCalendar('http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php?source=all');
 		/*
 		$('#calendar').calendario(
 		{caldata : {
