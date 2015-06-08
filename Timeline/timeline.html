@@ -5,93 +5,22 @@
 	<link rel="stylesheet" type="text/css" href="custom.css"/>
 </head>
 <body>
-<div id="timeline_id" class="tl-container">
-	<div class="tl-header">
-		<div class="tl-title">FOSSASIA Timeline</div>
-	</div>
-	<div class="tl-body">
-		<div class="tl-events ">
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">gemeinsam</div>
-					<div class="tl-event-date">
-						<div class="day">6</div>
-						<div class="month">June</div>
-					</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">Halle</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">westpfalz</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">Halle</div>
-					<div class="tl-event-date">
-						<div class="day">5</div>
-						<div class="month">June</div>
-					</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">Halle</div>
-					<div class="tl-event-date">
-						<div class="day">1</div>
-						<div class="month">June</div>
-					</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">Halle</div>
-					<div class="tl-event-date">
-						<div class="day">30</div>
-						<div class="month">May</div>
-					</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
+<div id="timeline_id"></div>
 
-			<div class="tl-event">
-				<div class="tl-event-head">
-					<div class="tl-event-source">Halle</div>
-				</div>
-				<div class="tl-event-body">
-					Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska
-				</div>
-			</div>
-		</div>
-	</div>
-</div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="malihu-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
 <script src="timeline.js"></script>
 <script>
-	Timeline('#timeline_id');
+$(document).ready(function() {
+	$('#timeline_id').communityTimeline({
+		data : 
+		[
+			{source : "halle", start : "2015-06-08T20:00:00", end : "2015-06-08T00:00:00", content : " Yahooooodsadj lksakldjklsajdkjsakldjklsajdklsa jdksajdklsja kldjklsa jdkljsakldjska", description : "adzza"},
+			{source : "westpfalz", start : "2015-06-09T20:00:00", end : "2015-06-09T00:00:00", content : "asdsad", description : "adzza"},
+			{source : "westpfalz", start : "2015-06-09T20:00:00", end : "2015-06-09T00:00:00", content : "asdsad", description : "adzza"}
+		]
+	});
+});
 </script>
 </body>
 </html>
