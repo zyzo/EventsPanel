@@ -1,4 +1,5 @@
-#timeline_id {
+#timeline1, #timeline2, #timeline3 {
 	width: 400px;
 	margin: auto;
+	margin-top : 20px;
 }
