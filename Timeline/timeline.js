@@ -38,24 +38,39 @@
             ;
             eventDiv.append('<div class="tl-event-body">' + data.summary);
         }
+        function insertAllRows(data) {
+            // sort events by start date
+            data.sort(function(a,b) { 
+                return (a.start < b.start  ? 1 : (a.start > b.start ? -1 : 0));
+            });
+            for (var key in combinedData) {
+                insertRow(combinedData[key]);
+            }
+            // add scrollbar
+            self.elem.find(' .tl-events').mCustomScrollbar({
+                autoHideScrollbar:true,
+                theme: "light-3"
+            });
+
+            $(document).trigger($.Event('communityTimeline.ready'));
+        }
+        var combinedData = [];
         if (self.options.data) {
             for (var i = 0; i < self.options.data.length; i++) {
                 var event = self.options.data[i];
-                insertRow(event);
+                combinedData.push(event);
             }
         }
         if (!this.options.disableAPISource) {
             this.getData(function(data) {
                 for (var key in data) {
                     data[key].start = self.convertToValidDateTime(data[key].start);
-                    insertRow(data[key]);
+                    combinedData.push(data[key]);
                 }
-                self.elem.find(' .tl-events').mCustomScrollbar({
-                    autoHideScrollbar:true,
-                    theme: "light-3"
-                });
-                $(document).trigger($.Event('communityTimeline.ready'));
+                insertAllRows(combinedData);
             });
+        } else {
+            insertAllRows(combinedData);
         }
     };
 
@@ -71,7 +86,7 @@
     }
 
     Timeline.prototype.getData = function(callback) {
-        $.getJSON(this.options.apiUrl + '?source=' + this.options.source, function(data) {
+        $.getJSON(this.options.apiUrl + '?fields=start,source,summary,description&source=' + this.options.source, function(data) {
             if (data.error) {
                  alert('API error : ' + data.error);
                  return; 
