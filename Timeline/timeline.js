@@ -15,7 +15,9 @@
         apiUrl : 'http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php',
         source : 'all',
         disableAPISource : false,
-        currentYear : '2015'
+        currentYear : '2015',
+        limit : '10',
+        until : '2016-01-31T23:59:59'
     };
 
     Timeline.prototype.insertHead = function() {
@@ -90,7 +92,12 @@
     }
 
     Timeline.prototype.getData = function(callback) {
-        $.getJSON(this.options.apiUrl + '?fields=start,source,summary,description&source=' + this.options.source, function(data) {
+        $.getJSON(this.options.apiUrl 
+            + '?fields=start,source,summary,description'
+            + '&source=' + this.options.source
+            + '&limit=' + this.options.limit
+            + '&sort=asc-start'
+            + '&to=' + this.options.until, function(data) {
             if (data.error) {
                  alert('API error : ' + data.error);
                  return; 
