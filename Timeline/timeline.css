@@ -107,6 +107,10 @@
   	padding-left: 5px;
 }
 
+.tl-event-date .year {
+  font-size : 12px;
+}
+
 .tl-event-body {
 	color: rgb(239, 79, 105);
   	font-size: 13px;

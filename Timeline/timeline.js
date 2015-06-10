@@ -14,7 +14,8 @@
         monthabbrs : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
         apiUrl : 'http://localhost/fossasia/common.api.fossasia.net/ics-collector/CalendarAPI.php',
         source : 'all',
-        disableAPISource : false
+        disableAPISource : false,
+        currentYear : '2015'
     };
 
     Timeline.prototype.insertHead = function() {
@@ -36,6 +37,9 @@
                 .append('<div class="day">' + dataDate.getDate())
                 .append('<div class="month">' + self.options.monthabbrs[dataDate.getMonth()])
             ;
+            if (dataDate.getFullYear() != self.options.currentYear) {
+                eventDate.append('<div class="year">' + dataDate.getFullYear())
+            }
             eventDiv.append('<div class="tl-event-body">' + data.summary);
         }
         function insertAllRows(data) {
