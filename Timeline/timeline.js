@@ -84,12 +84,13 @@
             self.elem.find('.tl-body').append('<i class="spinner animate-spin hidden">&#xe801;</i>');
 
             // add scrollbar
+            var noMoreEvents = false;
             self.elem.find(' .tl-events').mCustomScrollbar({
                 autoHideScrollbar:true,
                 theme: "light-3",
                 callbacks : {
                     onTotalScroll : function() {
-                        if (self.options.disableAPISource) return;
+                        if (self.options.disableAPISource || noMoreEvents) return;
                         self.elem.find('.spinner').removeClass('hidden');
                         var apiReq = self.options.apiUrl
                             + '?fields=start,source,summary,description'
@@ -99,12 +100,18 @@
                             + '&to=' + eventsDiv.find('.tl-event').last().data('date');
                         console.log(apiReq);
                         $.getJSON(apiReq, function (apiResult) {
-                            if (apiResult.error) console.error('API error : ' + apiResult.error);
-                            for (var key in apiResult) {
-                                if(apiResult[key].start) 
-                                    apiResult[key].start = self.convertToValidDateTime(apiResult[key].start);
+                                if (apiResult.error) {
+                                    console.error('API error : ' + apiResult.error);
+                                    if (apiResult.error == "No result found") {
+                                        noMoreEvents = true;
+                                    }
+                                } else {
+                                for (var key in apiResult) {
+                                    if(apiResult[key].start) 
+                                        apiResult[key].start = self.convertToValidDateTime(apiResult[key].start);
+                                    }
+                                insertAllRows(apiResult);
                             }
-                            insertAllRows(apiResult);
                             self.elem.find('.spinner').addClass('hidden');
                         });
                     }
