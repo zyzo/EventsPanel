@@ -16,7 +16,8 @@
         source : 'all',
         disableAPISource : false,
         currentYear : '2015',
-        limit : '10',
+        limit : '6',
+        lazyLoadLimit : '1',
         until : '2016-01-31T23:59:59'
     };
 
@@ -28,10 +29,28 @@
         this.elem.append('<div class="tl-body"><div class="tl-events"></div></div>');
         var eventsDiv = this.elem.find('.tl-events');
 
+        // Escape html string 
+        var entityMap = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': '&quot;',
+            "'": '&#39;',
+            "/": '&#x2F;'
+        };
+
+        function escapeHtml(string) {
+            return String(string).replace(/[&<>"'\/]/g, function (s) {
+                return entityMap[s];
+            });
+        }
+
         var self = this;
+
+        var eventsMCBContainer = null;
         function insertRow(data) {
             var dataDate = new Date(data.start);
-            var eventDiv = eventsDiv.append('<div class="tl-event">').find('.tl-event').last();
+            var eventDiv = eventsMCBContainer.append('<div class="tl-event">').find('.tl-event').last();
             var eventHead = eventDiv.append('<div class="tl-event-head">').find('.tl-event-head');
             eventHead.append('<div class="tl-event-source">' + data.source);
             var eventDate = eventHead.append('<div class="tl-event-date">').find('.tl-event-date');
@@ -40,24 +59,60 @@
                 .append('<div class="month">' + self.options.monthabbrs[dataDate.getMonth()])
             ;
             if (dataDate.getFullYear() != self.options.currentYear) {
-                eventDate.append('<div class="year">' + dataDate.getFullYear())
+                eventDate.append('<div class="year">' + dataDate.getFullYear());
             }
-            eventDiv.append('<div class="tl-event-body">' + data.summary);
+            eventDiv.append('<div class="tl-event-body">' + (data.summary ? escapeHtml(data.summary) : (data.description ? escapeHtml(data.description) : 'No description provided.')));
+            return eventDiv;
         }
+
         function insertAllRows(data) {
             // sort events by start date
             data.sort(function(a,b) { 
                 return (a.start < b.start  ? 1 : (a.start > b.start ? -1 : 0));
             });
-            for (var key in combinedData) {
-                insertRow(combinedData[key]);
+            for (var key in data) {
+                var eventDiv = insertRow(data[key]);
+                if (key == data.length - 1) {
+                    eventDiv.attr('data-date', data[key].start);
+                }
             }
+           
+        }
+
+        function prepareElems() {
+             // add spinner
+            self.elem.find('.tl-body').append('<i class="spinner animate-spin hidden">&#xe801;</i>');
+
             // add scrollbar
             self.elem.find(' .tl-events').mCustomScrollbar({
                 autoHideScrollbar:true,
-                theme: "light-3"
+                theme: "light-3",
+                callbacks : {
+                    onTotalScroll : function() {
+                        if (self.options.disableAPISource) return;
+                        self.elem.find('.spinner').removeClass('hidden');
+                        var apiReq = self.options.apiUrl
+                            + '?fields=start,source,summary,description'
+                            + '&source=' + self.options.source
+                            + '&limit=' + self.options.lazyLoadLimit
+                            + '&sort=asc-start'
+                            + '&to=' + eventsDiv.find('.tl-event').last().data('date');
+                        console.log(apiReq);
+                        $.getJSON(apiReq, function (apiResult) {
+                            if (apiResult.error) console.error('API error : ' + apiResult.error);
+                            for (var key in apiResult) {
+                                if(apiResult[key].start) 
+                                    apiResult[key].start = self.convertToValidDateTime(apiResult[key].start);
+                            }
+                            insertAllRows(apiResult);
+                            self.elem.find('.spinner').addClass('hidden');
+                        });
+                    }
+                },
+                onTotalScrollOffset:100,
+                alwaysTriggerOffsets:false
             });
-
+            eventsMCBContainer = eventsDiv.find('.mCSB_container');
             $(document).trigger($.Event('communityTimeline.ready'));
         }
         var combinedData = [];
@@ -69,6 +124,7 @@
         }
         if (!this.options.disableAPISource) {
             this.getData(function(data) {
+                prepareElems();
                 for (var key in data) {
                     data[key].start = self.convertToValidDateTime(data[key].start);
                     combinedData.push(data[key]);
@@ -76,6 +132,7 @@
                 insertAllRows(combinedData);
             });
         } else {
+            prepareElems();
             insertAllRows(combinedData);
         }
     };
@@ -97,12 +154,13 @@
             + '&source=' + this.options.source
             + '&limit=' + this.options.limit
             + '&sort=asc-start'
-            + '&to=' + this.options.until, function(data) {
-            if (data.error) {
-                 alert('API error : ' + data.error);
+            + '&to=' + this.options.until
+            + '&from=now', function(apiResult) {
+            if (apiResult.error) {
+                 console.error('API error : ' + apiResult.error);
                  return; 
             }
-            callback(data);
+            callback(apiResult);
         });
     };
 
