@@ -29,18 +29,19 @@
         this.elem.append('<div class="tl-body"><div class="tl-events"></div></div>');
         var eventsDiv = this.elem.find('.tl-events');
 
-        // Escape html string 
+        // Escape html string & convert some special characters to equivalent html tags
         var entityMap = {
             "&": "&amp;",
             "<": "&lt;",
             ">": "&gt;",
             '"': '&quot;',
             "'": '&#39;',
-            "/": '&#x2F;'
+            "/": '&#x2F;',
+            "\\n" : '<br/>'
         };
 
         function escapeHtml(string) {
-            return String(string).replace(/[&<>"'\/]/g, function (s) {
+            return String(string).replace(/[&<>"'\/]|\\n/g, function (s) {
                 return entityMap[s];
             });
         }
@@ -61,7 +62,7 @@
             if (dataDate.getFullYear() != self.options.currentYear) {
                 eventDate.append('<div class="year">' + dataDate.getFullYear());
             }
-            eventDiv.append('<div class="tl-event-body">' + (data.summary ? escapeHtml(data.summary) : (data.description ? escapeHtml(data.description) : 'No description provided.')));
+            eventDiv.append('<div class="tl-event-body">' + (data.description ? escapeHtml(data.description) : (data.summary ? escapeHtml(data.summary) : 'No description provided.')));
             return eventDiv;
         }
 
