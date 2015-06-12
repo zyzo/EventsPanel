@@ -27,9 +27,10 @@
     };
 
     Timeline.prototype.insertBody = function() {
-        this.elem.append('<div class="tl-body"><div class="tl-events"></div></div>');
+        this.elem.append('<div class="tl-body"><div class="tl-events"></div><div class="tl-details hidden"></div></div>');
+        var tlBody = this.elem.find('.tl-body');
         var eventsDiv = this.elem.find('.tl-events');
-
+        var detailsDiv = this.elem.find('.tl-details');
         // Escape html string & convert some special characters to equivalent html tags
         var entityMap = {
             "&": "&amp;",
@@ -64,6 +65,11 @@
                 eventDate.append('<div class="year">' + dataDate.getFullYear());
             }
             eventDiv.append('<div class="tl-event-body">' + (data.description ? escapeHtml(data.description) : (data.summary ? escapeHtml(data.summary) : 'No description provided.')));
+            eventDiv.click(function() {
+                updateDetail(data);
+                eventsDiv.toggleClass('hidden');
+                detailsDiv.toggleClass('hidden');
+            });
             return eventDiv;
         }
 
@@ -83,7 +89,7 @@
 
         function prepareElems() {
              // add spinner
-            self.elem.find('.tl-body').append('<i class="spinner animate-spin hidden">&#xe801;</i>');
+            tlBody.append('<i class="spinner animate-spin hidden">&#xe801;</i>');
 
             // add scrollbar
             var noMoreEvents = false;
@@ -95,7 +101,7 @@
                         if (self.options.disableAPISource || noMoreEvents) return;
                         self.elem.find('.spinner').removeClass('hidden');
                         var apiReq = self.options.apiUrl
-                            + '?fields=start,source,summary,description'
+                            + '?fields=start,source,summary,description,url,end'
                             + '&source=' + self.options.source
                             + '&limit=' + self.options.lazyLoadLimit;
                         if (self.options.order === 'latest-first') {
@@ -150,6 +156,29 @@
             prepareElems();
             insertAllRows(combinedData);
         }
+
+        (function prepareDetailsDiv() {
+            detailsDiv.append('<div class="communityName">')
+                .append('<div class="summary">')
+                .append('<div class="description">')
+                .append('<div class="start">')
+                .append('<div class="end">')
+                .append('<a class="url">Go to event page')
+                .append('<a href="#" id="goback">Go back to timeline');
+            detailsDiv.find('a#goback').click(function() {
+                detailsDiv.addClass('hidden');
+                eventsDiv.removeClass('hidden');
+            });
+        })();
+
+        function updateDetail(data) {
+            detailsDiv.find('.communityName').text(data.source);
+            detailsDiv.find('.summary').text(data.summary);
+            detailsDiv.find('.description').text(data.description);
+            detailsDiv.find('a.url').attr('href', data.url);
+            detailsDiv.find('.start').text(data.start);
+            detailsDiv.find('.end').text(data.end);
+        }
     };
 
     // Convert API datetime format to valid javascript format
@@ -165,7 +194,7 @@
 
     Timeline.prototype.getData = function(callback) {
         var apiCall = this.options.apiUrl 
-            + '?fields=start,source,summary,description'
+            + '?fields=start,source,summary,description,url,end'
             + '&source=' + this.options.source
             + '&limit=' + this.options.limit;
         if (this.options.order == 'latest-first') {

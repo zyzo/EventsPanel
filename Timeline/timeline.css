@@ -63,6 +63,42 @@
   border: 1px solid #ddd;
 }
 
+.tl-details a {
+  font-size: 13px;
+  color: rgb(64, 65, 124);
+  text-decoration: underline;
+}
+
+.tl-details a#goback {
+  position: absolute;
+  bottom: 5px;
+  left: 14px;
+}
+
+.tl-details a.url {
+  position: absolute;
+  bottom: 5px;
+  right: 14px;
+}
+
+.tl-details .summary {
+  color: #888;
+  font-size: 12px;
+}
+
+.tl-details .start, .tl-details .end {
+  font-size: 12px;
+  margin-top: 12px;
+}
+
+.tl-details .start {
+  float: left;
+  margin-left: 10px;
+}
+.tl-details .end {
+  float : right;
+  margin-right: 10px;
+}
 .tl-event {
 	width: 100%;
 	float: none;
@@ -72,6 +108,10 @@
 	padding: 10px;
 	border-bottom: 1px solid #ddd;
 	cursor: pointer;
+}
+
+.tl-event:hover {
+  background-color: white;
 }
 
 .tl-event-head {
@@ -110,7 +150,7 @@
   font-size : 12px;
 }
 
-.tl-event-body {
+.tl-event-body, .tl-details .description {
 	color: rgb(239, 79, 105);
   	font-size: 13px;
   	display: inline-block;
@@ -120,11 +160,6 @@
   	text-overflow: ellipsis;
   	max-width: 100%;
   	margin-bottom: 1px
-}
-
-.tl-event-body:hover {
-	color: white;
-	background-color: rgb(239, 79, 105);
 }
 
 .mCSB_inside>.mCSB_container {
