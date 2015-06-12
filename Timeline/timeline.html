@@ -9,8 +9,9 @@
 <div id="timeline1"></div>
 <div id="timeline2"></div>
 </div>
-<div style="width : 50%; float: right">
+<div style="width : 50%; float: right; margin-bottom : 20px;">
 <div id="timeline3"></div>
+<div id="timeline4"></div>
 </div>
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="malihu-scrollbar/jquery.mCustomScrollbar.concat.min.js"></script>
@@ -30,15 +31,20 @@ $(document).ready(function() {
 		],
 		disableAPISource: true
 	});
-	$('#timeline3').communityTimeline({
-		source : 'all'
-	});
-
 	$('#timeline2').communityTimeline({
 		source : 'halle',
 		title : 'HALLE EVENTS',
 		until : '2015-09-10T23:59:59'
 	});
+	$('#timeline3').communityTimeline({
+		source : 'all'
+	});
+	$('#timeline4').communityTimeline({
+		source : 'all',
+		title : 'UPCOMING EVENTS',
+		order : 'oldest-first'
+	});
+
 });	
 </script>
 </body>

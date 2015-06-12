@@ -17,8 +17,9 @@
         disableAPISource : false,
         currentYear : '2015',
         limit : '6',
-        lazyLoadLimit : '1',
-        until : '2016-01-31T23:59:59'
+        lazyLoadLimit : '10',
+        until : '2016-01-31T23:59:59',
+        order : 'latest-first'
     };
 
     Timeline.prototype.insertHead = function() {
@@ -67,10 +68,6 @@
         }
 
         function insertAllRows(data) {
-            // sort events by start date
-            data.sort(function(a,b) { 
-                return (a.start < b.start  ? 1 : (a.start > b.start ? -1 : 0));
-            });
             for (var key in data) {
                 var eventDiv = insertRow(data[key]);
                 if (key == data.length - 1) {
@@ -78,6 +75,10 @@
                 }
             }
            
+        }
+
+        function replaceAt(str, index, character) {
+            return str.substr(0, index - 1) + character + str.substr(index - 1 + character.length);
         }
 
         function prepareElems() {
@@ -96,9 +97,15 @@
                         var apiReq = self.options.apiUrl
                             + '?fields=start,source,summary,description'
                             + '&source=' + self.options.source
-                            + '&limit=' + self.options.lazyLoadLimit
-                            + '&sort=asc-start'
+                            + '&limit=' + self.options.lazyLoadLimit;
+                        if (self.options.order === 'latest-first') {
+                            apiReq += '&sort=asc-start'
                             + '&to=' + eventsDiv.find('.tl-event').last().data('date');
+                        } else {
+                            var from = eventsDiv.find('.tl-event').last().data('date');
+                            apiReq += '&sort=desc-start' 
+                            + '&from=' + replaceAt(from, from.length - 1, from[from.length - 1] + 1);
+                        }
                         console.log(apiReq);
                         $.getJSON(apiReq, function (apiResult) {
                                 if (apiResult.error) {
@@ -157,16 +164,23 @@
     }
 
     Timeline.prototype.getData = function(callback) {
-        $.getJSON(this.options.apiUrl 
+        var apiCall = this.options.apiUrl 
             + '?fields=start,source,summary,description'
             + '&source=' + this.options.source
-            + '&limit=' + this.options.limit
-            + '&sort=asc-start'
+            + '&limit=' + this.options.limit;
+        if (this.options.order == 'latest-first') {
+            apiCall += '&sort=asc-start'
             + '&to=' + this.options.until
-            + '&from=now', function(apiResult) {
+            + '&from=now';
+        } else {
+            apiCall += '&sort=desc-start'
+            + '&from=now';
+        }
+        console.log(apiCall);
+        $.getJSON(apiCall, function(apiResult) {
             if (apiResult.error) {
                  console.error('API error : ' + apiResult.error);
-                 return; 
+                 return;
             }
             callback(apiResult);
         });

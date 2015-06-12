@@ -135,6 +135,7 @@
   display: none !important;
 }
 
+/* fontello spinner */
 @font-face {
   font-family: 'fontello';
   src: url('./font/fontello.eot?775004');
@@ -271,4 +272,65 @@
     -webkit-transform: rotate(359deg);
     transform: rotate(359deg);
   }
+}
+
+/* hover detail panel */
+.thumbs {
+  padding: 8px 0;
+  text-align: center;
+}
+ 
+.thumbs ul li {
+  display: block;
+  position: relative;
+  float: left;
+  margin-left: 50px;
+  margin-bottom: 50px;
+}
+ 
+ 
+/** detail panel **/
+.details-pane {
+  display: none;
+  color: #414141;
+  background: #f1f1f1;
+  border: 1px solid #a9a9a9;
+  position: absolute;
+  top: 0;
+  left: 290px;
+  z-index: 99999;
+  width: 530px;
+  padding: 6px 8px;
+  text-align: left;
+  -webkit-box-shadow: 1px 3px 3px rgba(0,0,0,0.4);
+  -moz-box-shadow: 1px 3px 3px rgba(0,0,0,0.4);
+  box-shadow: 1px 3px 3px rgba(0,0,0,0.4);
+}
+.details-pane.rightside {
+  left: -529px;
+}
+ 
+.details-pane h3 {
+  font-size: 2.0em;
+  line-height: 1.1em;
+  margin-bottom: 4px;
+}
+ 
+.details-pane h3 span {
+  font-size: 0.75em;
+  font-style: italic;
+  color: #555;
+  padding-left: 15px;
+}
+ 
+.details-pane .desc {
+  font-size: 1.2em;
+  margin-bottom: 6px;
+}
+
+a.hvrlink:hover + .details-pane {
+  display: block;
+}
+.details-pane:hover {
+  display: block;
 }
