@@ -50,13 +50,9 @@
 
         var self = this;
 
-        var eventsMCBContainer = null;
-        function insertRow(data) {
-            var dataDate = new Date(data.start);
-            var eventDiv = eventsMCBContainer.append('<div class="tl-event">').find('.tl-event').last();
-            var eventHead = eventDiv.append('<div class="tl-event-head">').find('.tl-event-head');
-            eventHead.append('<div class="tl-event-source">' + data.source);
-            var eventDate = eventHead.append('<div class="tl-event-date">').find('.tl-event-date');
+        function insertDate(parent, date) {
+            var dataDate = new Date(date);
+            var eventDate = parent.append('<div class="tl-event-date">').find('.tl-event-date');
             eventDate
                 .append('<div class="day">' + dataDate.getDate())
                 .append('<div class="month">' + self.options.monthabbrs[dataDate.getMonth()])
@@ -64,6 +60,14 @@
             if (dataDate.getFullYear() != self.options.currentYear) {
                 eventDate.append('<div class="year">' + dataDate.getFullYear());
             }
+        }
+
+        var eventsMCBContainer = null;
+        function insertRow(data) {
+            var eventDiv = eventsMCBContainer.append('<div class="tl-event">').find('.tl-event').last();
+            var eventHead = eventDiv.append('<div class="tl-event-head">').find('.tl-event-head');
+            eventHead.append('<div class="tl-event-source">' + data.source);
+            insertDate(eventHead, data.start);
             eventDiv.append('<div class="tl-event-body">' + (data.description ? escapeHtml(data.description) : (data.summary ? escapeHtml(data.summary) : 'No description provided.')));
             eventDiv.click(function() {
                 updateDetail(data);
@@ -121,8 +125,8 @@
                                     }
                                 } else {
                                 for (var key in apiResult) {
-                                    if(apiResult[key].start) 
                                         apiResult[key].start = self.convertToValidDateTime(apiResult[key].start);
+                                        apiResult[key].end = self.convertToValidDateTime(apiResult[key].end);
                                     }
                                 insertAllRows(apiResult);
                             }
@@ -148,6 +152,7 @@
                 prepareElems();
                 for (var key in data) {
                     data[key].start = self.convertToValidDateTime(data[key].start);
+                    data[key].end = self.convertToValidDateTime(data[key].end);
                     combinedData.push(data[key]);
                 }
                 insertAllRows(combinedData);
@@ -158,26 +163,54 @@
         }
 
         (function prepareDetailsDiv() {
-            detailsDiv.append('<div class="communityName">')
+            detailsDiv.append('<a class="communityName">')
                 .append('<div class="summary">')
                 .append('<div class="description">')
-                .append('<div class="start">')
-                .append('<div class="end">')
-                .append('<a class="url">Go to event page')
-                .append('<a href="#" id="goback">Go back to timeline');
-            detailsDiv.find('a#goback').click(function() {
+                .append('<div class="datePanel">' 
+                    + '<div class="start tl-event-date"><div class="day"></div><div class="month"></div><div class="year"></div><div class="time"></div></div>'
+                    + '<span>to</span>'
+                    + '<div class="end tl-event-date"><div class="day"></div><div class="month"></div><div class="year"></div><div class="time"></div>')
+                .append('<a id="eventUrl" class="url">To event page')
+                .append('<a href="#" id="goback" class="url">Back to timeline');
+            detailsDiv.find('a#goback').click(function(e) {
+                e.preventDefault();
                 detailsDiv.addClass('hidden');
+                detailsDiv.find('.description').empty();
                 eventsDiv.removeClass('hidden');
             });
+            
         })();
 
         function updateDetail(data) {
-            detailsDiv.find('.communityName').text(data.source);
-            detailsDiv.find('.summary').text(data.summary);
-            detailsDiv.find('.description').text(data.description);
-            detailsDiv.find('a.url').attr('href', data.url);
-            detailsDiv.find('.start').text(data.start);
-            detailsDiv.find('.end').text(data.end);
+
+            function updateDate(eventDate, date) {
+                if (date) {
+                    var dataDate = new Date(date);
+                    eventDate.show();
+                    eventDate.find('.day').text(dataDate.getDate())
+                    eventDate.find('.month').text(self.options.monthabbrs[dataDate.getMonth()]);
+                    if (dataDate.getFullYear() != self.options.currentYear) {
+                        eventDate.find('.year').text(dataDate.getFullYear());
+                    }
+                    eventDate.find('.time').text(dataDate.getHours() + ':' + dataDate.getMinutes());
+                } else {
+                    eventDate.hide();
+                }
+            }
+
+
+            detailsDiv.find('a.communityName').attr('href', data.url ? data.url : '#').text(data.source);
+            detailsDiv.find('.summary').text(data.summary ? data.summary : '');
+            detailsDiv.find('.description')
+                .append(escapeHtml(data.description))
+                .mCustomScrollbar({
+                    theme: "dark",
+                });
+            if (data.url) detailsDiv.find('a#eventUrl').attr('href', data.url);
+            updateDate(detailsDiv.find('.start'), data.start);
+            updateDate(detailsDiv.find('.end'), data.end);
+            if (!data.start) detailsDiv.find('.datePanel').find('span').hide();
+            else detailsDiv.find('.datePanel').find('span').show();
         }
     };
 

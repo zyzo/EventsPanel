@@ -1,16 +1,7 @@
 @import url(http://fonts.googleapis.com/css?family=Lato:300,400,700);
 
 .tl-container *,.tl-container *:after, *:before { -webkit-box-sizing: border-box; -moz-box-sizing: border-box; box-sizing: border-box; }
-
-.tl-container a {
-	color: #f0f0f0;
-	text-decoration: none;
-}
-
-.tl-container a:hover {
-	color: #000;
-}
-
+  
 .tl-container, .tl-body, .tl-events, .tl-event-date .date {
 	position: relative;
 	top: auto;
@@ -63,7 +54,16 @@
   border: 1px solid #ddd;
 }
 
-.tl-details a {
+.tl-details {
+  background-color: white;
+  height: 100%;
+}
+.tl-details a.communityName {
+  color: rgb(98, 163, 218);
+  text-decoration: none;
+}
+
+.tl-details a.url {
   font-size: 13px;
   color: rgb(64, 65, 124);
   text-decoration: underline;
@@ -75,7 +75,7 @@
   left: 14px;
 }
 
-.tl-details a.url {
+.tl-details a#eventUrl {
   position: absolute;
   bottom: 5px;
   right: 14px;
@@ -86,9 +86,27 @@
   font-size: 12px;
 }
 
-.tl-details .start, .tl-details .end {
+.tl-details .datePanel {
+  width: 58%;
+  margin: auto;
   font-size: 12px;
   margin-top: 12px;
+  text-align: center;
+}
+
+.tl-details .datePanel span {
+  color : black;
+}
+
+.tl-details .tl-event-date .year {
+  font-size: 12px;
+  display: inline-block;
+  padding-left: 5px;
+}
+
+.tl-details .description {
+  background-color: white;
+  max-height: 50%;
 }
 
 .tl-details .start {
@@ -127,23 +145,23 @@
 }
 
 .tl-event-date .day {
-  	width: 30px;
-  	display: inline-block;
-  	text-align: right;
-  	margin: -10px 0 0 -15px;
-  	color: #686a6e;
-  	font-weight: 400;
-  	pointer-events: none;
-  	font-size: 20px;
-  	line-height: 20px;
-  	text-shadow: 0 -1px 0 rgba(255,255,255,0.8);
+	width: 30px;
+	display: inline-block;
+	text-align: right;
+	margin: -10px 0 0 -15px;
+	color: #686a6e;
+	font-weight: 400;
+	pointer-events: none;
+	font-size: 20px;
+	line-height: 20px;
+	text-shadow: 0 -1px 0 rgba(255,255,255,0.8);
 }
 
 .tl-event-date .month {
-  	display: inline-block;
-  	font-size: 10px;
-  	text-transform: uppercase;
-  	padding-left: 5px;
+	display: inline-block;
+	font-size: 10px;
+	text-transform: uppercase;
+	padding-left: 5px;
 }
 
 .tl-event-date .year {
@@ -152,14 +170,17 @@
 
 .tl-event-body, .tl-details .description {
 	color: rgb(239, 79, 105);
-  	font-size: 13px;
-  	display: inline-block;
-  	padding: 3px 5px;
-  	border-radius: 3px;
-  	overflow: hidden;
-  	text-overflow: ellipsis;
-  	max-width: 100%;
-  	margin-bottom: 1px
+	font-size: 13px;
+	display: inline-block;
+	padding: 3px 5px;
+	border-radius: 3px;
+	text-overflow: ellipsis;
+	max-width: 100%;
+	margin-bottom: 1px;
+}
+
+.tl-event-body {
+  overflow: hidden;
 }
 
 .mCSB_inside>.mCSB_container {
