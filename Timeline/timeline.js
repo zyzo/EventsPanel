@@ -27,7 +27,7 @@
     };
 
     Timeline.prototype.insertBody = function() {
-        this.elem.append('<div class="tl-body"><div class="tl-events"></div><div class="tl-details hidden"></div></div>');
+        this.elem.append('<div class="tl-body"><div class="tl-events"></div><div class="tl-details" style="display : none;"></div></div>');
         var tlBody = this.elem.find('.tl-body');
         var eventsDiv = this.elem.find('.tl-events');
         var detailsDiv = this.elem.find('.tl-details');
@@ -73,8 +73,8 @@
             eventDiv.append('<div class="tl-event-body">' + (data.description ? escapeHtml(data.description) : (data.summary ? escapeHtml(data.summary) : 'No description provided.')));
             eventDiv.click(function() {
                 updateDetail(data);
-                eventsDiv.toggleClass('hidden');
-                detailsDiv.toggleClass('hidden');
+                eventsDiv.css('display' , 'none');
+                detailsDiv.fadeIn();
             });
             return eventDiv;
         }
@@ -173,13 +173,13 @@
                     + '<span>to</span>'
                     + '<div class="end tl-event-date"><div class="day"></div><div class="month"></div><div class="year"></div><div class="time"></div>')
                 .append('<div class="location">')
-                .append('<a id="eventUrl" class="url">To event page')
+                .append('<a id="eventUrl" class="url" target="_blank">To event page')
                 .append('<a href="#" id="goback" class="url">Back to timeline');
             detailsDiv.find('a#goback').click(function(e) {
                 e.preventDefault();
-                detailsDiv.addClass('hidden');
+                detailsDiv.css('display', 'none');
                 detailsDiv.find('.description').empty();
-                eventsDiv.removeClass('hidden');
+                eventsDiv.fadeIn();
             });
             
         })();
