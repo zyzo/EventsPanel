@@ -105,7 +105,7 @@
                         if (self.options.disableAPISource || noMoreEvents) return;
                         self.elem.find('.spinner').removeClass('hidden');
                         var apiReq = self.options.apiUrl
-                            + '?fields=start,source,summary,description,url,end'
+                            + '?fields=start,source,summary,description,url,end,location'
                             + '&source=' + self.options.source
                             + '&limit=' + self.options.lazyLoadLimit;
                         if (self.options.order === 'latest-first') {
@@ -170,6 +170,7 @@
                     + '<div class="start tl-event-date"><div class="day"></div><div class="month"></div><div class="year"></div><div class="time"></div></div>'
                     + '<span>to</span>'
                     + '<div class="end tl-event-date"><div class="day"></div><div class="month"></div><div class="year"></div><div class="time"></div>')
+                .append('<div class="location">')
                 .append('<a id="eventUrl" class="url">To event page')
                 .append('<a href="#" id="goback" class="url">Back to timeline');
             detailsDiv.find('a#goback').click(function(e) {
@@ -196,7 +197,7 @@
                 } else {
                     eventDate.hide();
                 }
-            }
+            }   
 
 
             detailsDiv.find('a.communityName').attr('href', data.url ? data.url : '#').text(data.source);
@@ -211,6 +212,8 @@
             updateDate(detailsDiv.find('.end'), data.end);
             if (!data.start) detailsDiv.find('.datePanel').find('span').hide();
             else detailsDiv.find('.datePanel').find('span').show();
+            if (!data.location) detailsDiv.find('.location').empty().attr('title', null).hide();
+            else detailsDiv.find('.location').append(escapeHtml(data.location)).attr('title', data.location).show();
         }
     };
 
@@ -227,7 +230,7 @@
 
     Timeline.prototype.getData = function(callback) {
         var apiCall = this.options.apiUrl 
-            + '?fields=start,source,summary,description,url,end'
+            + '?fields=start,source,summary,description,url,end,location'
             + '&source=' + this.options.source
             + '&limit=' + this.options.limit;
         if (this.options.order == 'latest-first') {
