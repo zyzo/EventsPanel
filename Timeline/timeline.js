@@ -39,11 +39,13 @@
             '"': '&quot;',
             "'": '&#39;',
             "/": '&#x2F;',
-            "\\n" : '<br/>'
+            "\\n" : '<br/>',
+            "\\," : ',',
+            "\\\"" : '"'
         };
 
         function escapeHtml(string) {
-            return String(string).replace(/[&<>"'\/]|\\n/g, function (s) {
+            return String(string).replace(/[&<>"'\/]|\\n|\\,|\\\"/g, function (s) {
                 return entityMap[s];
             });
         }
