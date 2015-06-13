@@ -195,7 +195,11 @@
                     if (dataDate.getFullYear() != self.options.currentYear) {
                         eventDate.find('.year').text(dataDate.getFullYear());
                     }
-                    eventDate.find('.time').text(dataDate.getHours() + ':' + dataDate.getMinutes());
+                    var hours = dataDate.getHours().toString();
+                    if (hours.length == 1) hours = '0' + hours;
+                    var minutes = dataDate.getMinutes().toString();
+                    if (minutes.length == 1) minutes = '0' + minutes;
+                    eventDate.find('.time').text(hours + ':' + minutes);
                 } else {
                     eventDate.hide();
                 }
