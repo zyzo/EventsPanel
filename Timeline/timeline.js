@@ -179,6 +179,7 @@
                 e.preventDefault();
                 detailsDiv.css('display', 'none');
                 detailsDiv.find('.description').empty();
+                detailsDiv.find('.location').empty().attr('title', null);
                 eventsDiv.fadeIn();
             });
             
@@ -218,8 +219,8 @@
             updateDate(detailsDiv.find('.end'), data.end);
             if (!data.start) detailsDiv.find('.datePanel').find('span').hide();
             else detailsDiv.find('.datePanel').find('span').show();
-            if (!data.location) detailsDiv.find('.location').empty().attr('title', null).hide();
-            else detailsDiv.find('.location').append(escapeHtml(data.location)).attr('title', data.location).show();
+            if (data.location)
+                detailsDiv.find('.location').append(escapeHtml(data.location)).attr('title', data.location).show();
         }
     };
 
