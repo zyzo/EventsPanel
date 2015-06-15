@@ -53,7 +53,7 @@ $('#timeline-id').communityTimeline({});
 
 * **monthsLabels**
 
-  An array of 12 labels corresponding to 12 months for displaying event date. Default to abbreviations of English months : ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'].
+  An array of 12 labels corresponding to 12 months for displaying event date. Default to abbreviations of English months : `['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']`.
 
 * **currentYear**
 
